@@ -6,12 +6,17 @@
 
 package amedia;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
+import javafx.stage.FileChooser;
 
 /**
  *
@@ -19,13 +24,30 @@ import javafx.scene.control.Label;
  */
 public class FXMLDocumentController implements Initializable {
     
+    private MediaPlayer mediaPlayer;
+ 
+
+
     @FXML
-    private Label label;
+    private MediaView mediaView;
+     
+    private String filepath;
     
     @FXML
     private void handleButtonAction(ActionEvent event) {
-        System.out.println("You clicked me!");
-        label.setText("Hello World!");
+        FileChooser fileChooser=new FileChooser();
+        FileChooser.ExtensionFilter filter= new FileChooser.ExtensionFilter("Select a file (*.mp4)","*.mp4");
+        fileChooser.getExtensionFilters().add(filter);
+        File file=fileChooser.showOpenDialog(null);
+        filepath=file.toURI().toString();
+
+        if(filepath!=null)
+         {
+           Media media=new Media(filepath);
+           mediaPlayer=new MediaPlayer(media);
+           mediaView.setMediaPlayer(mediaPlayer);
+           mediaPlayer.play();
+         }
     }
 
     @Override
